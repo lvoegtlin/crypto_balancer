@@ -1,0 +1,9 @@
+name: crypto_balancer
+channels:
+  - conda-forge
+  - defaults
+  - ak_93
+  - ecrop
+dependencies:
+  - python=3.7
+prefix: /Users/voegtlil/miniconda3/envs/crypto_balancer
