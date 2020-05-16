@@ -33,10 +33,10 @@ pip install -e .
 
 ## Config
 Create a config file in `config.ini` with definition of your exchange and portfolio percentages, and theshold (percent) that rebalancing is needed.
-An example config file is included at `config.ini.example` but below is all you need:
 
 ```
-[binance]
+[test]
+exchange = binance
 api_key = <api key>
 api_secret = <api secret>
 threshold = 2.0
@@ -48,6 +48,7 @@ targets = XRP 40
 ```
 
 By default it values the portfolio in USDT, this can be changed with `--valuebase` argument.
+The base currency needs to be part of the portfolio.
 
 ## Running
 
