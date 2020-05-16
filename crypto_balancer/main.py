@@ -12,11 +12,11 @@ logger = logging.getLogger(__name__)
 
 
 def main(args=None):
-    config = configparser.ConfigParser()
-    config.read('config.ini')
+    portfolio_config = configparser.ConfigParser()
+    portfolio_config.read('portfolios.ini')
 
-    def exchange_choices():
-        return set(config.sections()) & set(exchanges)
+    def portfolio_choices():
+        return set(portfolio_config.sections())
 
     parser = argparse.ArgumentParser(
         description='Balance holdings on an exchange.')
@@ -34,13 +34,13 @@ def main(args=None):
     parser.add_argument('--mode', choices=['mid', 'passive', 'cheap'],
                         default='mid',
                         help='Mode to place orders')
-    parser.add_argument('exchange', choices=exchange_choices())
+    parser.add_argument('portfolio', choices=portfolio_choices())
     args = parser.parse_args()
 
-    config = config[args.exchange]
+    portfolio_config = portfolio_config[args.portfolio]
 
     try:
-        targets = [x.split() for x in config['targets'].split('\n')]
+        targets = [x.split() for x in portfolio_config['targets'].split('\n')]
         targets = dict([[a, float(b)] for (a, b) in targets])
     except ValueError:
         logger.error("Targets format invalid")
@@ -52,12 +52,12 @@ def main(args=None):
                      .format(total_target))
         sys.exit(1)
 
-    valuebase = config.get('valuebase') or args.valuebase
+    valuebase = portfolio_config.get('valuebase') or args.valuebase
 
-    exchange = CCXTExchange(args.exchange,
+    exchange = CCXTExchange(portfolio_config['exchange'],
                             targets.keys(),
-                            config['api_key'],
-                            config['api_secret'])
+                            portfolio_config['api_key'],
+                            portfolio_config['api_secret'])
 
     print("Connected to exchange: {}".format(exchange.name))
     print()
@@ -68,7 +68,7 @@ def main(args=None):
             print("Cancelled order:", order['symbol'], order['id'])
         print()
 
-    threshold = float(config['threshold'])
+    threshold = float(portfolio_config['threshold'])
     max_orders = int(args.max_orders)
 
     portfolio = Portfolio.make_portfolio(targets, exchange, threshold, valuebase)
