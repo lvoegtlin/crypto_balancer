@@ -56,8 +56,9 @@ def balancing(portfolio_config, portfolio_name, trade, force, max_orders, cancel
         bal = portfolio.balances[cur]
         pct = portfolio.balances_pct[cur]
         tgt = targets[cur]
-        logger.info("  {:<6s} {:<8.2f} ({:>5.2f} / {:>5.2f}%)".format(cur, bal, pct, tgt))
+        logger.info("  {:<6s} {:<8.6f} ({:>5.2f} / {:>5.2f}%)".format(cur, bal, pct, tgt))
 
+    logger.info("\n")
     logger.info("  Total value: {:.2f} {}".format(portfolio.valuation_quote,
                                                   portfolio.quote_currency))
     balancer = SimpleBalancer()
@@ -76,10 +77,10 @@ def balancing(portfolio_config, portfolio_name, trade, force, max_orders, cancel
         threshold))
 
     if not portfolio.needs_balancing and not force:
-        logger.info("No balancing needed")
-        sys.exit(0)
+        logger.info("\nNo balancing needed")
+        return
 
-    logger.info("Balancing needed{}:".format(" [FORCED]" if force else ""))
+    logger.info("\nBalancing needed{}:".format(" [FORCED]" if force else ""))
 
     logger.info("Proposed Portfolio:")
     portfolio = res['proposed_portfolio']
@@ -92,7 +93,7 @@ def balancing(portfolio_config, portfolio_name, trade, force, max_orders, cancel
         bal = portfolio.balances[cur]
         pct = portfolio.balances_pct[cur]
         tgt = targets[cur]
-        logger.info("  {:<6s} {:<8.2f} ({:>5.2f} / {:>5.2f}%)"
+        logger.info("  {:<6s} {:<8.6f} ({:>5.2f} / {:>5.2f}%)"
                     .format(cur, bal, pct, tgt))
 
     logger.info("  Total value: {:.2f} {}".format(portfolio.valuation_quote,
@@ -109,6 +110,7 @@ def balancing(portfolio_config, portfolio_name, trade, force, max_orders, cancel
     logger.info("  Total fees to re-balance: {} {}"
                 .format(total_fee, portfolio.quote_currency))
 
+    logger.info("\n")
     logger.info("Orders:")
     if trade:
         for order in res['success']:
