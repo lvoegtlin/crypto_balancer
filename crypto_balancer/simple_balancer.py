@@ -15,8 +15,8 @@ class SimpleBalancer():
 
     def permute_differences(self, differences_quote):
         differences = differences_quote.items()
-        positives = [x for x in differences if x[1] > 0.01]
-        negatives = [x for x in differences if x[1] < -0.01]
+        positives = [x for x in differences if x[1] > 0]
+        negatives = [x for x in differences if x[1] < 0]
         res = product(positives, negatives)
         return res
 

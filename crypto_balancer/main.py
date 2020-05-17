@@ -16,7 +16,7 @@ from crypto_balancer.simple_balancer import SimpleBalancer
 logger = logging.getLogger(__name__)
 
 
-def balancing(portfolio_config, portfolio_name, trade, force, max_orders, valuebase, cancel, log_dir, mode):
+def balancing(portfolio_config, portfolio_name, trade, force, max_orders, cancel, log_dir, mode):
     set_up_logger(log_dir, portfolio_name)
 
     try:
@@ -32,7 +32,7 @@ def balancing(portfolio_config, portfolio_name, trade, force, max_orders, valueb
                      .format(total_target))
         sys.exit(1)
 
-    valuebase = portfolio_config.get('valuebase') or valuebase
+    valuebase = portfolio_config.get('valuebase') or 'USDT'
 
     exchange = CCXTExchange(portfolio_config['exchange'],
                             targets.keys(),
@@ -140,8 +140,6 @@ if __name__ == '__main__':
     parser.add_argument('--max_orders', default=5,
                         help='Maximum number of orders to perform in '
                              'rebalance')
-    parser.add_argument('--valuebase', default='USDT',
-                        help='Currency to value portfolio in')
     parser.add_argument('--cancel', action="store_true",
                         help='Cancel open orders first')
     parser.add_argument('--log_dir', type=str,
@@ -162,7 +160,6 @@ if __name__ == '__main__':
                      itertools.repeat(args.trade),
                      itertools.repeat(args.force),
                      itertools.repeat(args.max_orders),
-                     itertools.repeat(args.valuebase),
                      itertools.repeat(args.cancel),
                      itertools.repeat(args.log_dir),
                      itertools.repeat(args.mode)
