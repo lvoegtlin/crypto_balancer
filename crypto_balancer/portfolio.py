@@ -62,7 +62,7 @@ class Portfolio():
 
     @property
     def needs_balancing(self):
-        return self.balance_max_error > self.threshold
+        return self.balance_rms_error > self.threshold
 
     @property
     def balances_pct(self):

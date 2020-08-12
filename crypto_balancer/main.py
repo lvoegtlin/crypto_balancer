@@ -30,7 +30,7 @@ def balancing(portfolio_config, portfolio_name, trade, force, max_orders, cancel
     if total_target != 100:
         logger.error("Total target needs to equal 100, it is {}"
                      .format(total_target))
-        sys.exit(1)
+        return
 
     valuebase = portfolio_config.get('valuebase') or 'USDT'
 
@@ -87,7 +87,7 @@ def balancing(portfolio_config, portfolio_name, trade, force, max_orders, cancel
 
     if not portfolio:
         logger.info("Could not calculate a better portfolio")
-        sys.exit(0)
+        return
 
     for cur in portfolio.balances:
         bal = portfolio.balances[cur]
