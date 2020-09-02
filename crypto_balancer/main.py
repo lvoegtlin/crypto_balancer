@@ -133,6 +133,9 @@ def set_up_logger(log_dir, portfolio_name):
 
 
 if __name__ == '__main__':
+    p_config = configparser.ConfigParser()
+    p_config.read('portfolios.ini')
+
     parser = argparse.ArgumentParser(
         description='Balance holdings on an exchange.')
     parser.add_argument('--trade', action="store_true",
@@ -150,10 +153,9 @@ if __name__ == '__main__':
     parser.add_argument('--mode', choices=['mid', 'passive', 'cheap'],
                         default='mid',
                         help='Mode to place orders')
+    parser.add_argument('--portfolio', choices=p_config.sections(), nargs='+',
+                        default=p_config.sections(), required=False)
     args = parser.parse_args()
-
-    p_config = configparser.ConfigParser()
-    p_config.read('portfolios.ini')
 
     pool = Pool(processes=cpu_count())
     pool.starmap(balancing,
