@@ -159,8 +159,8 @@ if __name__ == '__main__':
 
     pool = Pool(processes=cpu_count())
     pool.starmap(balancing,
-                 zip([p_config[p] for p in p_config.sections()],
-                     p_config.sections(),
+                 zip([p_config[p] for p in args.portfolio],
+                     args.portfolio,
                      itertools.repeat(args.trade),
                      itertools.repeat(args.force),
                      itertools.repeat(args.max_orders),
